@@ -1,11 +1,19 @@
-# plugin-dev PHP development environment configuration for working on php plugins
+# Wordpress environment setup for plugin development
 
-## What is this?
+## Dependencies
 
-This is a repository that contains environment configuration for bringing up clean development environments for the following platforms:
-- WooCommerce (Wordpress)
-- Magento 1 & 2 
-- Onestep
+This LAMP stack uses docker under the hood and requires a docker pull to:
+- mysql:5.7
+- jburger/wordpress-xdebug:latest
+
+This is a repository that contains an environment configuration for bringing up a clean wordpress development environment.
+It is built upon:
+
+- Ubuntu Desktop
+- Apache
+- Wordpress
+- MySQL
+- PHP
 
 ## Pre-requisites
 - Requires a working installation of Vagrant
@@ -15,16 +23,10 @@ This is a repository that contains environment configuration for bringing up cle
 ##### Note: The first time provisioning process will download a fair bit of data and may take 30 minutes to complete in some cases. 
 
 ## Usage
-1. Clone the plugin-dev environment repository, and choose the 'flavour' of platform your interested by checking out the relevant branch:
+1. Clone the plugin-iac environment repository, and cd into the wordpress directory
 
 ```bash
-cd /path/to/src
-git clone https://bitbucket.org/oxipay/plugin-dev
-cd plugin-dev
-git checkout wordpress
-#git checkout magento_1 - Not start
-#git checkout magento_2 - Not started
-#git checkout onestep - Not started
+cd wordpress
 ```
 
 2. The vagrant file depends on the following vagrant plugin: [https://github.com/emyl/vagrant-triggers]()
@@ -39,11 +41,12 @@ vagrant up
 ```
 
 4. On completion, you should have a virtualbox instance up and running, and it will have installed docker and a few other goodies to make development & troubleshooting a little easier. Now would be a good time to make a snapshot:
+
 ```bash
 vagrant snapshot push
 ```
 
-5. Optional: if you are working on a plugin, clone it into the 'www' directory structure in the appropriate location for the platform you have selected. For wordpress based development, this is typically in www/wp-content/plugins
+5. Optional: if you are working on a wordpress plugin, clone it into the www/wp-content/plugins
 
 6. You should now be able to open a browser on your machine, to http://localhost:8000 and start configuring your platform and testing out your plugin
 
@@ -51,15 +54,13 @@ vagrant snapshot push
 
 In order to take advantage of xdebug and set breakpoints in the code you will need:
 
-* PHP Storm or an IDE capable of remote debugging an xdebug endpoint
-
-This wordpress environment has xdebug installed and listening on port 9001 to your workstation (port 9000 internally to the vagrant box). In PHP Storm, you can configure your IDE to interact:
+* PHP Storm or another IDE capable of remote debugging an xdebug endpoint
 
 1. File Menu -> Settings -> Languages & Frameworks -> PHP -> Debug -> DBGp Proxy
 
 * IDE key: phpstorm
 * Host: localhost
-* Port: 9001
+* Port: 9000
 * OK
 
 2. Run Menu -> Edit Configurations... -> Hit the + button in top left of window
@@ -69,7 +70,7 @@ This wordpress environment has xdebug installed and listening on port 9001 to yo
 * Hit the + button in top left of window
 * Name: vagrant
 * Host: localhost
-* Port: 9001
+* Port: 9000
 * Debugger: Xdebug
 * OK
 * Servers: vagrant
