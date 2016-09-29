@@ -1,6 +1,6 @@
 Vagrant.configure("2") do |config|
   # uses ubuntu desktop 14.04 LTS
-  config.vm.box = "box-cutter/ubuntu1404-desktop"
+  config.vm.box = "ericmann/trusty64"
   # headless version
   # config.vm.box = "ubuntu/trusty64"
 
@@ -12,23 +12,13 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder "./docker/", "/src/wordpress-environment"
 
   #mount wordpress related files
-  config.vm.synced_folder "./www", "/src/wordpress"
+  config.vm.synced_folder "./www/", "/src/wordpress", type: "docker"
    
   #mount guest-scripts (for vagrant event triggers)
   config.vm.synced_folder "./guest-scripts", "/src/scripts"
-
-  config.vm.provider "virtualbox" do |vb|
-    # Display the VirtualBox GUI when booting the machine
-    vb.gui = true
-    vb.name = "wordpress-vagrant"  
-    # Customize the amount of memory on the VM:
-    vb.memory = "1024"
-  end
-
-  config.vm.provider "vmware_fusion" do |vm|
-    vm.gui = true
-    vm.name = "wordpress-vagrant"
-    vm.memory = "4096"
+ 
+  config.vm.provider "hyperv" do |hv|
+	hv.memory = "3076"
   end
   
   #runs a cleanup script before the guest is halted
