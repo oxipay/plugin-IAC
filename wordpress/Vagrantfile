@@ -1,0 +1,52 @@
+Vagrant.configure("2") do |config|
+  # uses ubuntu desktop 14.04 LTS
+  config.vm.box = "box-cutter/ubuntu1404-desktop"
+  # headless version
+  # config.vm.box = "ubuntu/trusty64"
+
+  # port forward 8000 on the guest VM to localhost:8000 - mainly for convenience
+  config.vm.network "forwarded_port", guest: 8000, host: 8000 #wordpress
+  config.vm.network "forwarded_port", guest: 3306, host: 3306 #mysql
+  config.vm.network "forwarded_port", guest: 9000, host: 9001 #xdebug
+  #mounting docker related files
+  config.vm.synced_folder "./docker/", "/src/wordpress-environment"
+
+  #mount wordpress related files
+  config.vm.synced_folder "./www", "/src/wordpress"
+   
+  #mount guest-scripts (for vagrant event triggers)
+  config.vm.synced_folder "./guest-scripts", "/src/scripts"
+
+  config.vm.provider "virtualbox" do |vb|
+    # Display the VirtualBox GUI when booting the machine
+    vb.gui = true
+    vb.name = "wordpress-vagrant"  
+    # Customize the amount of memory on the VM:
+    vb.memory = "1024"
+  end
+
+  config.vm.provider "vmware_fusion" do |vm|
+    vm.gui = true
+    vm.name = "wordpress-vagrant"
+    vm.memory = "4096"
+  end
+  
+  #runs a cleanup script before the guest is halted
+  config.trigger.before :halt do
+    info "bringing down the wordpress environment"
+    run_remote "bash /src/scripts/before-halt.sh"
+  end
+
+  #ensures containers are brought up after the guest is brought up
+  config.trigger.after :up do
+    info "bringing wordpress and mysql containers online"
+    run_remote "bash /src/scripts/after-up.sh"
+  end
+
+  # the next section runs a provisioning script
+  # this is a bash script that runs as admin on the guest VM
+  proxy = ENV['HTTP_PROXY']
+  
+  config.vm.provision "shell", path: "./vagrant/provision.sh", :args => proxy
+  config.vm.provision "shell", path: "./guest-scripts/after-up.sh"
+end
