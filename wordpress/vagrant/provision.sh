@@ -39,11 +39,7 @@ echo 'vagrant: installing dependencies'
 apt-get install -y --force-yes \
   apt-transport-https \
   ca-certificates \
-  linux-headers-$(uname -r) \
-  linux-image-extra-$(uname -r) \
-  linux-image-extra-virtual \
   docker-engine \
-  sublime-text-installer \
   git
 
 echo 'vagrant: download docker-compose'
