@@ -12,7 +12,7 @@ if [ -n "$proxy" ]; then
 	echo 'http_proxy="'$proxy'"' >> /etc/environment
 	echo 'https_proxy="'$proxy'"' >> /etc/environment
 	echo 'ftp_proxy="'$proxy'"' >> /etc/environment
-	echo 'no_proxy=localhost,127.0.0.1' >> /etc/environment
+	echo 'no_proxy="localhost,127.0.0.1"' >> /etc/environment
 
 	echo "export http_proxy='$proxy'" >> /etc/default/docker
 	echo "export https_proxy='$proxy'" >> /etc/default/docker
