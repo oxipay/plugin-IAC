@@ -15,7 +15,7 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder "./www/", "/src/wordpress", type: "smb"
    
   #mount guest-scripts (for vagrant event triggers)
-  config.vm.synced_folder "./guest-scripts", "/src/scripts"
+  config.vm.synced_folder "./guest-scripts", "/src/scripts", type: "smb"
  
   config.vm.provider "hyperv" do |hv|
 	hv.memory = "3076"
