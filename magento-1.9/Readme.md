@@ -2,24 +2,29 @@
 ## a vagrant environment for magento 1.9 development
 
 ### dependencies
-- lamp.dev https://bitbucket.org/jimburger/lamp-dev
+- lamp.dev
 
-### 
-once lamp.dev is included in your vagrant boxes you 
-should be able to clone this repo into the folder that you intend to begin development from
+Once lamp.dev is included in your vagrant boxes you should be cd into this folder and provision the vagrant box.
 
 ```
-git clone https://[username]@bitbucket.org/oxipay/magento-dev.git
-cd magento-dev
+cd magento-1.9
 vagrant up
 ```
+Once up, you should be able browse to http://localhost:8000/magento/ to begin configuring your instance.
 
 #### ports
 * host 8000 : guest 80 - apache2
-* host 3306 : guest 3306 - mysql
-* host 9001 : guest 9000 - xdebug
+* host 3306 : guest 3307 - mysql
 
-You should be able browse to http://localhost:8000/magento/ to begin configuring your instance
+#### drive mappings
+Vagrant will map the following drives:
 
-To begin plugin development
+./magento to [guest]:/var/www/html/magento
+
+### Plugin development
+Once provisioned you should be able to browse to ./magento/app/code on your host and begin adding plugin related code files. You may need to either turn off magento's cache, or periodically flush it in order to see changes occur, but for the most part you can simply trust development done on the host will be picked up by the magento instance on the guest.
+
+
+
+
 
