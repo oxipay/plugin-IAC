@@ -5,6 +5,7 @@ This repository contains infrastructure as code (IAC) designed to ease developme
 Currently there are:
 * lamp.dev - a barebones php lamp stack based on an ubuntu desktop environment
 * magento-1.9 - this depends on lamp.dev and overlays a community edition of magento @ v1.9
+* wordpress - this is for woocommerce development, uses a docker compose script to bring up wordpress
 
 *Please note that these environments are insecure and not intended for production use for any reason*
 
