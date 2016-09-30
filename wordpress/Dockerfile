@@ -7,6 +7,6 @@ RUN yes | pecl install xdebug && \
 	echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/xdebug.ini && \
 	echo "xdebug.idekey=phpstorm" >> /usr/local/etc/php/conf.d/xdebug.ini && \
 	echo "xdebug.remote_autostart=off" >> /usr/local/etc/php/conf.d/xdebug.ini && \
-	echo "66.155.40.202 api.wordpress.org" >> /etc/hosts
+	echo "dns-nameservers 10.130.8.11 10.130.8.12" >> /etc/network/interfaces
 EXPOSE 9000
 	
