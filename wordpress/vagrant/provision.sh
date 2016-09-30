@@ -24,9 +24,6 @@ if [ -n "$proxy" ]; then
 	echo 'acquire::ftp::proxy "'$proxy'";' >> /etc/apt/apt.conf
 fi
 
-# ensure connectivity to wordpress API
-echo "66.155.40.202 api.wordpress.org" >> /etc/hosts
-
 echo 'vagrant: setting apt-get sources'
 touch /etc/apt/sources.list.d/docker.list
 echo 'deb https://apt.dockerproject.org/repo ubuntu-trusty main' >> /etc/apt/sources.list.d/docker.list
