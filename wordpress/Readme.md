@@ -19,6 +19,7 @@ It is built upon:
 - Requires a working installation of Vagrant
 - Also requires the vagrant-triggers vagrant plugin to automate aspects of docker
 - The shell being used to run Vagrant requires internet access. If you are behind a corporate proxy then you will need to ensure the shell you are working from is configured appropriately. If you have an environment variable 'HTTP_PROXY' set - the provisioning process will use this for all apt-get installs, docker pulls and git pulls/pushes.
+- Wordpress also may require proxy settings: please refer to https://www.danbishop.org/2013/10/14/using-wordpress-behind-a-proxy/ for configuring wp-config appropriately
 
 ##### Note: The first time provisioning process will download a fair bit of data and may take 30 minutes to complete in some cases. 
 

@@ -54,5 +54,6 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell" do |s|
     s.binary = false
     s.path = "./guest-scripts/after-up.sh"
+    s.args = proxy
   end
 end
