@@ -45,6 +45,14 @@ Vagrant.configure("2") do |config|
   # this is a bash script that runs as admin on the guest VM
   proxy = ENV['HTTP_PROXY']
   
-  config.vm.provision "shell", path: "./vagrant/provision.sh", :args => proxy
-  config.vm.provision "shell", path: "./guest-scripts/after-up.sh"
+  config.vm.provision "shell" do |s|
+    s.binary = false
+    s.path = "./vagrant/provision.sh"
+    s.args = proxy
+  end
+
+  config.vm.provision "shell" do |s|
+    s.binary = false
+    s.path = "./guest-scripts/after-up.sh"
+  end
 end
