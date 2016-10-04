@@ -17,14 +17,9 @@ done
 if [ -u $1 ]; then
         exit
 else
-        server="$1"
-fi
-#
-#Check if the proxy port is set
-if [ -u $2 ]; then
-        exit
-else
-        port="$2"
+	proxy=$1
+	server="$(echo $proxy | cut -f1 -d':')"
+	port="$(echo $proxy | cut -f2 -d':')"
 fi
 #
 #If the file does not exist then exit
