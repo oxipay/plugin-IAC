@@ -52,7 +52,7 @@ apt-get install -y --force-yes \
   git \
   curl
 
-a2enmod rewrite
+#a2enmod rewrite
 echo "ServerName localhost" >> /etc/apache2/apache2.conf
 sed 's/80/8000/' /etc/apache2/ports.conf
 sed 's/80/8000/' /etc/apache2/sites-enabled/000-default.conf
@@ -73,18 +73,20 @@ iptables -t nat -A OUTPUT -o lo -p tcp --dport 80 -j REDIRECT --to-port 8000
 
 curl -sS http://getcomposer.org/installer | php
 mv composer.phar /usr/local/bin/composer
-mysql -u root -ppassword -e "CREATE DATABASE IF NOT EXISTS magento;"
-mysql -u root -ppassword -e "GRANT ALL ON magento.* TO magento@localhost IDENTIFIED BY 'magento';"
-mysql -u root -ppassword -e "GRANT SUPER ON *.* TO 'magento'@'localhost';"
+
 chown -R vagrant /var/www/html
+
 mkdir /home/vagrant/.composer
 chown -R vagrant /home/vagrant/.composer
-
 cd /var/www/html
 composer create-project magento/core magento/ -vvv
-
 chmod -R a+rwx ./magento/
+mv /var/www/html/magento/errors/local.xml.sample local.xml #enable detailed errors - DO NOT USE IN PROD
 php5enmod xdebug
 php5enmod mcrypt
 php5enmod curl
 service apache2 restart
+
+mysql -u root -ppassword -e "CREATE DATABASE IF NOT EXISTS magento;"
+mysql -u root -ppassword -e "GRANT ALL ON magento.* TO magento@localhost IDENTIFIED BY 'magento';"
+mysql -u root -ppassword -e "GRANT SUPER ON *.* TO 'magento'@'localhost';"
