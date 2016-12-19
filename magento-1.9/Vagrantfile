@@ -26,6 +26,7 @@ Vagrant.configure("2") do |config|
     run_remote "sudo service apache2 start"
   end
 
+  #if you have a corporate proxy you'll need to set HTTP_PROXY in your shell
   proxy = ENV['HTTP_PROXY']
   config.vm.provision "shell", path: "./vagrant/provision.sh", :args => proxy
 end

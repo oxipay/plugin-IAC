@@ -2,6 +2,8 @@
 sudo -i
 proxy=$1
 
+#if you have a corporate proxy you'll need to set HTTP_PROXY
+
 if [ -n "$proxy" ]; then
 	export http_proxy=$proxy
 	export https_proxy=$proxy
@@ -54,8 +56,8 @@ apt-get install -y --force-yes \
 
 #a2enmod rewrite
 echo "ServerName localhost" >> /etc/apache2/apache2.conf
-sed 's/80/8000/' /etc/apache2/ports.conf
-sed 's/80/8000/' /etc/apache2/sites-enabled/000-default.conf
+sed -i -e 's/80/8000/' /etc/apache2/ports.conf
+sed -i -e 's/80/8000/' /etc/apache2/sites-enabled/000-default.conf
 
 phpIni="/etc/php5/apache2/php.ini"
 echo "zend_extension=$(find /usr/lib/php5/20121212/xdebug.so)" > $phpIni
@@ -75,6 +77,7 @@ curl -sS http://getcomposer.org/installer | php
 mv composer.phar /usr/local/bin/composer
 
 chown -R vagrant /var/www/html
+mysql -u root -ppassword -e "DROP DATABASE IF EXISTS magento;"
 
 mkdir /home/vagrant/.composer
 chown -R vagrant /home/vagrant/.composer
