@@ -16,9 +16,6 @@ if [ -n "$proxy" ]; then
 	echo 'https_proxy="'$proxy'"' >> /etc/environment
 	echo 'ftp_proxy="'$proxy'"' >> /etc/environment
 	echo 'no_proxy=localhost,127.0.0.1,host.env,10.0.2.2,127.0.1.1' >> /etc/environment
-
-	echo "export http_proxy='$proxy'" >> /etc/default/docker
-	echo "export https_proxy='$proxy'" >> /etc/default/docker
 	. /etc/environment
 
 	touch /etc/apt/apt.conf
@@ -42,22 +39,17 @@ apt-get install -y --force-yes \
   apt-transport-https \
   ca-certificates \
   lamp-server^ \
-  linux-headers-$(uname -r) \
-  linux-image-extra-$(uname -r) \
-  linux-image-extra-virtual \
   php5-gd \
   php5-mcrypt \
   php5-curl \
   php5-xdebug \
-  wireshark \
-  nano \
   git \
   curl
 
 #a2enmod rewrite
 echo "ServerName localhost" >> /etc/apache2/apache2.conf
-sed -i -e 's/80/8000/' /etc/apache2/ports.conf
-sed -i -e 's/80/8000/' /etc/apache2/sites-enabled/000-default.conf
+sed -i -e 's/\<80\>/8000/' /etc/apache2/ports.conf
+sed -i -e 's/\<80\>/8000/' /etc/apache2/sites-enabled/000-default.conf
 
 phpIni="/etc/php5/apache2/php.ini"
 echo "zend_extension=$(find /usr/lib/php5/20121212/xdebug.so)" > $phpIni
@@ -71,7 +63,6 @@ php5dismod xdebug
 
 #map 80 to 8000 as per host environment
 iptables -t nat -A OUTPUT -o lo -p tcp --dport 80 -j REDIRECT --to-port 8000
-#todo: automate apache2 listenport = 8000
 
 curl -sS http://getcomposer.org/installer | php
 mv composer.phar /usr/local/bin/composer
