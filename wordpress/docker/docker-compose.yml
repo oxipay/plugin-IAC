@@ -16,7 +16,7 @@ services:
   wordpress:
     depends_on:
       - db
-    image: jburger/wordpress-xdebug:latest
+    image: oxipayau/plugin-iac:wordpress
     volumes:
       - "/src/wordpress:/var/www/html"
     links:

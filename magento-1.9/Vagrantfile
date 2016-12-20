@@ -1,11 +1,12 @@
 Vagrant.configure("2") do |config|
-  # p:\apps\software\vagrant boxes\lamp.dev.box
-  config.vm.box = "lamp.dev"
+  config.vm.box = "box-cutter/ubuntu1404-desktop"
   
   # port forward 8000 on the guest VM to localhost:8000 - mainly for convenience
   config.vm.network "forwarded_port", guest: 8000, host: 8000 #magento
   config.vm.network "forwarded_port", guest: 3306, host: 3307 #mysql
-  
+
+  #must be mapped before provisioning otherwise magento files go into guest folder instead of host folder
+  config.vm.synced_folder "./magento", "/var/www/html/magento" 
    
   config.vm.provider "virtualbox" do |vb|
     # Display the VirtualBox GUI when booting the machine
@@ -14,12 +15,18 @@ Vagrant.configure("2") do |config|
     # Customize the amount of memory on the VM:
     vb.memory = "2048"
   end
+  
+  config.trigger.before :up do
+    #required to exist prior to synced folder mapping
+    magento_dir = './magento'
+    Dir.mkdir magento_dir unless File.directory?(magento_dir)
+  end
 
   config.trigger.after :up do
-    run_remote "sudo service apache2 restart"
-    #mount magento related files
-    config.vm.synced_folder "./magento", "/var/www/html/magento"
+    run_remote "sudo service apache2 start"
   end
-  
-  config.vm.provision "shell", path: "./vagrant/provision.sh"
+
+  #if you have a corporate proxy you'll need to set HTTP_PROXY in your shell
+  proxy = ENV['HTTP_PROXY']
+  config.vm.provision "shell", path: "./vagrant/provision.sh", :args => proxy
 end

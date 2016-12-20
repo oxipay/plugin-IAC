@@ -24,6 +24,7 @@ if [ -n "$proxy" ]; then
 	echo 'acquire::ftp::proxy "'$proxy'";' >> /etc/apt/apt.conf
 fi
 
+sudo echo "dns-nameservers 10.130.8.11 10.130.8.12" >> /etc/network/interfaces
 echo 'vagrant: setting apt-get sources'
 touch /etc/apt/sources.list.d/docker.list
 echo 'deb https://apt.dockerproject.org/repo ubuntu-trusty main' >> /etc/apt/sources.list.d/docker.list
